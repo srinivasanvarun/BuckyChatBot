@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.post('/getcategory', (req, res) => {
   var jsondata = JSON.parse(JSON.stringify(req.body));
   console.log(jsondata);
-  var obj = jsondata.queryResult.parameters['object'];
+  var obj = jsondata.result.parameters['object'];
   console.log(obj);
   var query = thing.find({thing:{"$regex":obj}});
   query.exec((err,doc) => {

@@ -8,7 +8,10 @@ var app = express();
 app.use(bodyParser.json());
 // Getting trash details
 app.post('/getcategory', (req, res) => {
-  var obj = req.body.queryResult.parameters['object'];
+  var jsondata = JSON.parse(JSON.stringify(req.body));
+  console.log(jsondata);
+  var obj = jsondata.queryResult.parameters['object'];
+  console.log(obj);
   var query = thing.find({thing:{"$regex":obj}});
   query.exec((err,doc) => {
     if(!err){

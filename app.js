@@ -1,13 +1,15 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var {mongoose} = require('./db/mongoose');
 var {thing} = require('./models/trash_model');
 const port = process.env.PORT || 3000;
 
 var app = express();
-
+app.use(bodyParser.json());
 // Getting trash details
-app.get('/getcategory/:item', (req, res) => {
-  var query = thing.find({thing:{"$regex":req.params.item}});
+app.post('/getcategory', (req, res) => {
+  var obj = req.body.queryResult.parameters['object'];
+  var query = thing.find({thing:{"$regex":obj}});
   query.exec((err,doc) => {
     if(!err){
       var len = Object.keys(doc).length;

@@ -9,9 +9,8 @@ app.use(bodyParser.json());
 // Getting trash details
 app.post('/getcategory', (req, res) => {
   var jsondata = JSON.parse(JSON.stringify(req.body));
-  console.log(jsondata);
   var obj = jsondata.result.parameters['object'];
-  console.log(obj);
+  console.log('query string --> '+obj);
   var query = thing.find({thing:{"$regex":obj}});
   query.exec((err,doc) => {
     if(!err){
@@ -19,7 +18,7 @@ app.post('/getcategory', (req, res) => {
       if(len == 1){
         console.log(doc[0].thing);
         var string = 'You can put '+doc[0].thing+' in the '+doc[0].color+' colored '+doc[0].category+' bins.';
-        res.json({'fulfillmentText': string});
+        res.json({'speech': string, 'display': string, 'source':'get category'});
       } else if(len > 1){
         var string = 'You can put ';
         for(var i=0;i<len;i++){
@@ -32,9 +31,10 @@ app.post('/getcategory', (req, res) => {
         }
         string += ' in the '+doc[0].color+' colored '+doc[0].category+' bins.'
       }
-      res.json({'fulfillmentText': string});
+      res.json({'speech': string, 'display': string, 'source':'get category'});
     }else{
-      res.json({fulfillmentText: 'Sorry. I\'m not sure what you are talking about. Try a different keyword.'});
+      var string = 'Sorry. I\'m not sure what you are talking about. Try a different keyword.';
+      res.json({'speech': string, 'display': string, 'source':'get category'});
     }
   });
 });
